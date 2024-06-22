@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/WOCLIF/static/css/main.598568bb.css",
+    "main.js": "/WOCLIF/static/js/main.c50b04e4.js",
+    "static/media/home.jpg": "/WOCLIF/static/media/home.0c7180386ca9923ba35c.jpg",
+    "static/media/telephone-612061.jpg": "/WOCLIF/static/media/telephone-612061.4092feddf05fe6eff8da.jpg",
+    "static/media/Schlogo.png": "/WOCLIF/static/media/Schlogo.909c56334a08a126c3c3.png",
+    "static/media/news.png": "/WOCLIF/static/media/news.d34c1e07ed9835375cc2.png",
+    "index.html": "/WOCLIF/index.html",
+    "main.598568bb.css.map": "/WOCLIF/static/css/main.598568bb.css.map",
+    "main.c50b04e4.js.map": "/WOCLIF/static/js/main.c50b04e4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.598568bb.css",
+    "static/js/main.c50b04e4.js"
+  ]
+}
