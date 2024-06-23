@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/WOCLIF/static/css/main.65e3d7f7.css",
+    "main.css": "/WOCLIF/static/css/main.74c69200.css",
     "main.js": "/WOCLIF/static/js/main.dc4160cf.js",
     "static/media/home.jpg": "/WOCLIF/static/media/home.0c7180386ca9923ba35c.jpg",
     "static/media/telephone-612061.jpg": "/WOCLIF/static/media/telephone-612061.4092feddf05fe6eff8da.jpg",
@@ -8,11 +8,11 @@
     "static/media/man-1853545_1280.jpg": "/WOCLIF/static/media/man-1853545_1280.846f702680ba669b2fce.jpg",
     "static/media/news.png": "/WOCLIF/static/media/news.d34c1e07ed9835375cc2.png",
     "index.html": "/WOCLIF/index.html",
-    "main.65e3d7f7.css.map": "/WOCLIF/static/css/main.65e3d7f7.css.map",
+    "main.74c69200.css.map": "/WOCLIF/static/css/main.74c69200.css.map",
     "main.dc4160cf.js.map": "/WOCLIF/static/js/main.dc4160cf.js.map"
   },
   "entrypoints": [
-    "static/css/main.65e3d7f7.css",
+    "static/css/main.74c69200.css",
     "static/js/main.dc4160cf.js"
   ]
 }
