@@ -1,113 +1,187 @@
-import React, { useState, useEffect } from "react";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-const Biology = () => {
-  const [query, setQuery] = useState("Biology");
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(false);
+body {
+}
 
-  useEffect(() => {
-    searchBooks(query);
-  }, [query]);
-
-  const searchBooks = async (searchQuery) => {
-    setLoading(true); // Set loading state to true when fetching starts
-
-    let allBooks = [];
-    let page = 1;
-    let totalBooks = 0;
-    const limit = 50; // Number of books per page
-
-    do {
-      const response = await fetch(
-        `https://gutendex.com/books?search=${searchQuery}&page=${page}&limit=${limit}`
-      );
-      const data = await response.json();
-      allBooks = [...allBooks, ...data.results];
-      totalBooks = data.total; // Total number of books matching the query
-      page++;
-    } while (allBooks.length < totalBooks);
-
-    setLoading(false); // Set loading state to false when fetching completes
-    setBooks(allBooks);
-  };
-
-  const handleSearch = (event) => {
-    event.preventDefault();
-    searchBooks(query);
-  };
-
-  return (
-    <div>
-      <h1>Books under Biology</h1>
-      <form onSubmit={handleSearch}>
-        <input
-          type="button"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for books..."
-        />
-      </form>
-
-      {/* Display loading text or spinner */}
-      {loading && <p>Loading books...</p>}
-
-      <div>
-        {books.length > 0 && (
-          <ul>
-            {books.map((book) => (
-              <li key={book.id} style={{ marginBottom: "20px" }}>
-                <div>
-                  {book.formats["image/jpeg"] && (
-                    <img
-                      src={book.formats["image/jpeg"]}
-                      alt={`${book.title} cover`}
-                      style={{
-                        width: "100px",
-                        height: "150px",
-                        marginRight: "20px",
-                      }}
-                    />
-                  )}
-                  <div
-                    style={{ display: "inline-block", verticalAlign: "top" }}
-                  >
-                    <h2>{book.title.split(":")[0] + "."}</h2>
-                    <p>
-                      by {book.authors.map((author) => author.name).join(", ")}
-                    </p>
-                    <a
-                      href={book.formats["text/html"]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ marginRight: "10px" }}
-                    >
-                      Read Live
-                    </a>
-
-                    <a
-                      href={book.formats["text/html"]}
-                      download="mybook.pdf"
-                      style={{ marginRight: "10px" }} // Apply style directly to the <a> tag
-                    >
-                      Download
-                    </a>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default Biology;
+.headercolor{
+  background-color: red;
+  width: 100%;
+}
 
 
+.position{
+  position: fixed;
+  top: 0;
+  z-index: 333;
+  background-color: white;
+}
 
-<div className="btn-holder">
-<button className="btns" type="submit" onClick={handleSubmit}>
-  Send request
-</button>
-</div>
+.Header-container {
+  width: 100%;
+}
+
+.Header-container header {
+  margin: auto;
+  max-width: 85rem;
+  width: 100%;
+}
+
+.Header-container header div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  max-width: 85rem;
+  width: 100%;
+}
+
+header div nav {
+  display: inline-block;
+}
+
+header div nav ul {
+  display: flex;
+}
+
+header div nav ul li {
+  list-style: none;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+header div nav ul li a {
+  font-size: 19px;
+  color: #8c929c;
+  display: block;
+  margin-left: 20px;
+  margin-right: 20px;
+  text-decoration: none;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-weight: 300;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+header div nav ul li a:hover {
+  text-decoration: underline;
+  text-underline-offset: 15px; /* Adjust this value to set the desired gap */
+  color: navy;
+}
+
+.schlogo img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  vertical-align: baseline;
+  margin-left: -40px;
+}
+
+.Header-container header div .dropicon {
+  display: none;
+}
+
+.Header-container header div .dropicon span {
+  color: #333;
+  cursor: pointer;
+}
+
+.side-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80%;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.side-menu.open {
+  display: block;
+  transform: translateX(0);
+}
+
+.side-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.side-menu ul li {
+  padding: 1rem;
+}
+
+.side-menu ul li a {
+  font-size: 16px;
+  text-decoration: none;
+  color: #8c929c;
+  text-decoration: none;
+  font-style: normal;
+    font-weight: 300;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.side-menu ul li a:hover {
+  text-decoration: underline;
+  color: navy;
+}
+
+@media (max-width: 900px) {
+  header div nav {
+    display: none;
+  }
+
+  .Header-container header div .dropicon {
+    display: contents;
+  }
+
+  .Header-container header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .Header-container header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 25px;
+    padding-right: 30px;
+    max-width: 85rem;
+    width: 100%;
+  }
+
+  .position{
+    position: fixed;
+    top: 0;
+    z-index: 333;
+    background-color: white;
+  }
+
+  .schlogo img{
+    width: 66px;
+    height: 66px;
+    object-fit: cover;
+    vertical-align: baseline;
+    margin-left: -44px;
+  }
+
+  .Header-container header div .dropicon span {
+    color: #333;
+    cursor: pointer;
+    margin-right: -15px;
+}
+}
