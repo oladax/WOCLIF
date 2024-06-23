@@ -1,187 +1,82 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+import React, { useState } from 'react';
+import schlogo from '../Images/Schlogo.png';
+import { Link, Outlet } from 'react-router-dom';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <div className="Header-container">
+      <header>
+        <div>
+          <div className="schlogo">
+            <a href="/">
+              <img src={schlogo} alt="School logo" />
+            </a>
+          </div>
+
+          <nav className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
+            <ul>
+              <li>
+                <Link to="/" onClick={closeMenu}>Home</Link>
+              </li>
+              <li>
+                <Link to="/bookpage" onClick={closeMenu}>Library</Link>
+              </li>
+              <li>
+                <Link to="/about" onClick={closeMenu}>About</Link>
+              </li>
+              <li>
+                <Link to="/contact" onClick={closeMenu}>Contact</Link>
+              </li>
+              <li>
+                <Link to="/account" onClick={closeMenu}>Account</Link>
+              </li>
+            </ul>
+          </nav>
+
+          <nav className="main-nav">
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/bookpage">Library</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
+              <li>
+                <Link to="/account">Account</Link>
+              </li>
+            </ul>
+          </nav>
+
+          <div className="dropicon" onClick={toggleMenu}>
+            <span>
+              <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+            </span>
+          </div>
+        </div>
+      </header>
+      <div>
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
-body {
-}
-
-.headercolor{
-  background-color: red;
-  width: 100%;
-}
-
-
-.position{
-  position: fixed;
-  top: 0;
-  z-index: 333;
-  background-color: white;
-}
-
-.Header-container {
-  width: 100%;
-}
-
-.Header-container header {
-  margin: auto;
-  max-width: 85rem;
-  width: 100%;
-}
-
-.Header-container header div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  max-width: 85rem;
-  width: 100%;
-}
-
-header div nav {
-  display: inline-block;
-}
-
-header div nav ul {
-  display: flex;
-}
-
-header div nav ul li {
-  list-style: none;
-  display: inline-block;
-  vertical-align: baseline;
-}
-
-header div nav ul li a {
-  font-size: 19px;
-  color: #8c929c;
-  display: block;
-  margin-left: 20px;
-  margin-right: 20px;
-  text-decoration: none;
-  font-style: normal;
-  letter-spacing: 1px;
-  font-weight: 300;
-  font-family: 'BebasNeue', sans-serif;
-}
-
-header div nav ul li a:hover {
-  text-decoration: underline;
-  text-underline-offset: 15px; /* Adjust this value to set the desired gap */
-  color: navy;
-}
-
-.schlogo img {
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
-  vertical-align: baseline;
-  margin-left: -40px;
-}
-
-.Header-container header div .dropicon {
-  display: none;
-}
-
-.Header-container header div .dropicon span {
-  color: #333;
-  cursor: pointer;
-}
-
-.side-menu {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80%;
-  background-color: white;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-}
-
-.side-menu.open {
-  display: block;
-  transform: translateX(0);
-}
-
-.side-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 110px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.side-menu ul li {
-  padding: 1rem;
-}
-
-.side-menu ul li a {
-  font-size: 16px;
-  text-decoration: none;
-  color: #8c929c;
-  text-decoration: none;
-  font-style: normal;
-    font-weight: 300;
-  font-family: 'BebasNeue', sans-serif;
-}
-
-.side-menu ul li a:hover {
-  text-decoration: underline;
-  color: navy;
-}
-
-@media (max-width: 900px) {
-  header div nav {
-    display: none;
-  }
-
-  .Header-container header div .dropicon {
-    display: contents;
-  }
-
-  .Header-container header div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .Header-container header div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 25px;
-    padding-right: 30px;
-    max-width: 85rem;
-    width: 100%;
-  }
-
-  .position{
-    position: fixed;
-    top: 0;
-    z-index: 333;
-    background-color: white;
-  }
-
-  .schlogo img{
-    width: 66px;
-    height: 66px;
-    object-fit: cover;
-    vertical-align: baseline;
-    margin-left: -44px;
-  }
-
-  .Header-container header div .dropicon span {
-    color: #333;
-    cursor: pointer;
-    margin-right: -15px;
-}
-}
+export default Header;
