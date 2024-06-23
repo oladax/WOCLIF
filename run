@@ -1,82 +1,131 @@
-import React, { useState } from 'react';
-import schlogo from '../Images/Schlogo.png';
-import { Link, Outlet } from 'react-router-dom';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  return (
-    <div className="Header-container">
-      <header>
-        <div>
-          <div className="schlogo">
-            <a href="/">
-              <img src={schlogo} alt="School logo" />
-            </a>
-          </div>
-
-          <nav className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
-            <ul>
-              <li>
-                <Link to="/" onClick={closeMenu}>Home</Link>
-              </li>
-              <li>
-                <Link to="/bookpage" onClick={closeMenu}>Library</Link>
-              </li>
-              <li>
-                <Link to="/about" onClick={closeMenu}>About</Link>
-              </li>
-              <li>
-                <Link to="/contact" onClick={closeMenu}>Contact</Link>
-              </li>
-              <li>
-                <Link to="/account" onClick={closeMenu}>Account</Link>
-              </li>
-            </ul>
-          </nav>
-
-          <nav className="main-nav">
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/bookpage">Library</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact</Link>
-              </li>
-              <li>
-                <Link to="/account">Account</Link>
-              </li>
-            </ul>
-          </nav>
-
-          <div className="dropicon" onClick={toggleMenu}>
-            <span>
-              <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
-            </span>
-          </div>
-        </div>
-      </header>
-      <div>
-        <Outlet />
-      </div>
-    </div>
-  );
+.newscon{
+  background: rgb(44, 65, 103);
+  
 }
 
-export default Header;
+.latestnews{
+  max-width: 85rem;
+  margin: auto;
+}
+
+.news {
+  padding: 57px 0 70px 0;
+
+}
+
+.newsarticlecon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+h2 {
+  color: #fff;
+  font-size: 60px;
+  font-family: 'BebasNeue';
+  line-height: 68px;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 7rem;
+  margin-top: -20px;
+}
+
+h1 {
+text-align: left;
+padding-bottom: 18px;
+}
+
+.news h2 {
+color: #ffff;
+  font-size: 35px;
+}
+
+.article-con{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.news article {
+  margin-left: 7rem;
+  margin-right: 7rem;
+}
+
+.news .pic {
+float: left;
+margin-right: 25px;
+margin-top: 4px;
+  width: 100px;
+  height: 100px;
+}
+
+.news .pic img {
+  width: 100px;
+  height: 100px;
+border-radius: 5px;
+}
+
+.news .info {
+overflow: hidden;
+color: #fff;
+font-size: 14px;
+line-height: 20px;
+}
+
+.news .info h4 {
+color: #fff;
+font-size: 15px;
+line-height: 16px;
+font-weight: bold;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.news .info .date {
+color: wheat;
+font-size: 14px;
+line-height: 20px;
+padding-top: 10px;
+}
+
+.news .info p {
+padding-bottom: 4px;
+  font-size: 16px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.news .more {
+padding-right: 23px;
+color: #fff;
+}
+
+.info .more {
+color: #fff;
+  font-size: 14px;
+}
+
+.btn-holder {
+text-align: center;
+clear: both;
+}
+
+a.btn,
+.btn {
+color: #7d8797;
+border-radius: 4px;
+background: #fff;
+font-size: 16px;
+height: 46px;
+line-height: 46px;
+display: inline-block;
+padding: 0 21px;
+border: none;
+}
+
+a.btn.blue,
+.btn.blue {
+background: #008bc4;
+color: #fff;
+}
