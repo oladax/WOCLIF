@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/WOCLIF/static/css/main.51038b63.css",
-    "main.js": "/WOCLIF/static/js/main.9df42b66.js",
+    "main.css": "/WOCLIF/static/css/main.063e7e19.css",
+    "main.js": "/WOCLIF/static/js/main.1c80dbcb.js",
     "static/media/home.jpg": "/WOCLIF/static/media/home.0c7180386ca9923ba35c.jpg",
     "static/media/telephone-612061.jpg": "/WOCLIF/static/media/telephone-612061.4092feddf05fe6eff8da.jpg",
     "static/media/Schlogo.png": "/WOCLIF/static/media/Schlogo.909c56334a08a126c3c3.png",
+    "static/media/man-1853545_1280.jpg": "/WOCLIF/static/media/man-1853545_1280.846f702680ba669b2fce.jpg",
     "static/media/news.png": "/WOCLIF/static/media/news.d34c1e07ed9835375cc2.png",
     "index.html": "/WOCLIF/index.html",
-    "main.51038b63.css.map": "/WOCLIF/static/css/main.51038b63.css.map",
-    "main.9df42b66.js.map": "/WOCLIF/static/js/main.9df42b66.js.map"
+    "main.063e7e19.css.map": "/WOCLIF/static/css/main.063e7e19.css.map",
+    "main.1c80dbcb.js.map": "/WOCLIF/static/js/main.1c80dbcb.js.map"
   },
   "entrypoints": [
-    "static/css/main.51038b63.css",
-    "static/js/main.9df42b66.js"
+    "static/css/main.063e7e19.css",
+    "static/js/main.1c80dbcb.js"
   ]
 }
