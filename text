@@ -1,248 +1,129 @@
-import React, { useEffect, useState } from "react";
-import "./Home.css";
-import { faArrowRight, faBook, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
+import axios from "axios";
+import "./BookSearch.css"; // Add your custom styles here
+import Bookpage from "../Pages/Bookpage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from 'axios';
-import img from '../Images/news.png'; // Fallback image
-import Books from "./Books";
-import { faMapMarkerAlt, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faGooglePlus, faTwitter, faPinterest } from '@fortawesome/free-brands-svg-icons';
-import { Link } from "react-router-dom";
-import write from '../Images/ico_information.png'
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-function Home() {
-  const [latestNews, setLatestNews] = useState([]);
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+const BookSearch = () => {
+  const [query, setQuery] = useState("");
+  const [books, setBooks] = useState([]);
+  const [message, setMessage] = useState("");
+  const [inputError, setInputError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await axios.get('https://newsapi.org/v2/top-headlines', {
-          params: {
-            country: 'ng', // Fetching news from Nigeria
-            apiKey: 'd7e4d24c88ea456db4f9c6b5d77887ee'
-          }
-        });
-
-        setLatestNews(response.data.articles.slice(0, 2)); // Display the first two news articles
-
-      } catch (error) {
-        console.error('Error fetching the news data', error);
-      }
-    };
-
-    fetchNews();
-  }, []);
-
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-
-    if (!email) {
-      setError('Please enter your email address');
+  const handleSearch = async () => {
+    if (query.trim() === "") {
+      setInputError(true);
+      setErrorMessage("Please enter a search term.");
       return;
     }
 
-    const data = { email };
+    setInputError(false);
+    setErrorMessage("");
+    setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:3002/subscribe-email', data);
-
-      if (response.status === 200) {
-        alert('Subscription request sent successfully!');
-        setEmail('');
-        setError('');
+      // Fetch from Gutenberg API
+      const gutenbergResponse = await axios.get(
+        `https://gutendex.com/books?search=${query}`
+      );
+      if (gutenbergResponse.data.results.length > 0) {
+        setBooks(gutenbergResponse.data.results);
+        setMessage("");
       } else {
-        setError('Failed to subscribe. Please try again later.');
+        // Fetch from Google Books API if not found in Gutenberg
+        const googleResponse = await axios.get(
+          `https://www.googleapis.com/books/v1/volumes?q=${query}&key=AIzaSyCmSq1TVDrDfG6DrbZakTEyqyueSSvqJ1E`
+        );
+        if (googleResponse.data.items && googleResponse.data.items.length > 0) {
+          setBooks(googleResponse.data.items);
+          setMessage(
+            "This book is going to be added soon to our collection of books."
+          );
+        } else {
+          setMessage("No results found.");
+        }
       }
     } catch (error) {
-      setError('Failed to subscribe. Please try again later.');
-      console.error('Error:', error);
+      console.error("Error fetching data:", error);
+      setErrorMessage("An error occurred while searching. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setError('');
-  };
-
   return (
-    <div className="homecon">
-      <div className="home">
-        <div className="hometext">
-          <h2>
-            Empowering Future Health Innovators For <em> Sustainer</em> Public
-            Health Care
-          </h2>
-          <Link className="button" to="bookpage">Library</Link> 
-        </div>
-      </div>
-
-      <div className="con-side-pad">
-      <main>
-        <div className="sub-main">
-          <section className="posts">
-            <article>
-              <div className="pic">
-                <div className="icon-container">
-                  <FontAwesomeIcon icon={faGraduationCap} />
-                </div>
-              </div>
-              <div className="info">
-                <h3>The best learning methods</h3>
-                <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium, totam rem aperiam, eaque
-                  ipsa quae ab illo inventore veritatis quasi architecto beatae
-                  vitae dicta sunt explicabo.
-                </p>
-              </div>
-            </article>
-
-            <article>
-              <div className="pic">
-                <div className="icon-container">
-                  <FontAwesomeIcon icon={faBook} />
-                </div>
-              </div>
-              <div className="info">
-                <h3>Awesome results of our students</h3>
-                <p>
-                  Vero eos et accusamus et iusto odio dignissimos ducimus
-                  blanditiis praesentium voluptatum deleniti atque corrupti quos
-                  dolores et quas molestias excepturi sint occaecati cupiditate
-                  non provident, similique sunt in culpa.
-                </p>
-              </div>
-            </article>
-          </section>
-        </div>
-      </main>
-
-      <div className="newscon">
-        <div className="latestnews">
-          <section className="news">
-            <div className="container">
-              <h2>Latest news</h2>
-              <div className="newsarticlecon">
-                {latestNews.map((article, index) => (
-                  <article key={index}>
-                    <div className="pic">
-                      <img src={article.urlToImage || img} alt="News" onError={(e) => { e.target.onerror = null; e.target.src = img; }} />
-                    </div>
-                    <div className="info">
-                      <h4>{article.title}</h4>
-                      <p className="date">{new Date(article.publishedAt).toLocaleDateString()} - {article.author || 'Unknown'}</p>
-                      <p>{article.description}</p>
-                      <a className="more" href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
-
-      <div className="Famous-book">
-        <h2>Famous Science Books</h2>
-        <Books />
-      </div>
-
-      <div className="info-div">
-        <div className="container">
-
-          <div className="info-con">
-            <img src={write} alt="" />
-            <div>
-            <span className="title">Request information</span>
-            <span className="text">Do you have some questions? Fill the form and get an answer!</span>
-            </div>
-              </div>
-
-            <div className="redirect">
-              <Link className="arrow" to="/contact">
-              <FontAwesomeIcon icon={faArrowRight} />
-              </Link>
-            </div>
-        </div>
-      </div>
-
-      <div className="footerpart">
-        <footer id="footer">
-          <div className="container">
-            <section>
-              <article className="col-1">
-                <h3>Contact</h3>
-                <ul>
-                  <li className="address">
-                    <a href="#">
-                      <FontAwesomeIcon icon={faMapMarkerAlt} /> 151 W Adams St  Detroit, MI 48226
-                    </a>
-                  </li>
-                  <li className="mail">
-                    <a href="#">
-                      <FontAwesomeIcon icon={faEnvelope} /> contact@harrisonuniversity.com
-                    </a>
-                  </li>
-                  <li className="phone last">
-                    <a href="#">
-                      <FontAwesomeIcon icon={faPhone} /> (971) 536 845 924
-                    </a>
-                  </li>
-                </ul>
-              </article>
-              <article className="col-2">
-                <h3>Forum topics</h3>
-                <ul>
-                  <li><a href="#">Omnis iste natus error sit</a></li>
-                  <li><a href="#">Nam libero tempore cum soluta</a></li>
-                  <li><a href="#">Totam rem aperiam eaque </a></li>
-                  <li><a href="#">Ipsa quae ab illo inventore veritatis </a></li>
-                  <li className="last"><a href="#">Architecto beatae vitae dicta sunt </a></li>
-                </ul>
-              </article>
-              <article className="col-3">
-                <h3>Social media</h3>
-                <p>Connect with us on social media and stay updated with the latest news and events.</p>
-                <ul>
-                  <li className="facebook">
-                    <a href="#"><FontAwesomeIcon icon={faFacebook} /> Facebook</a>
-                  </li>
-                  <li className="google-plus">
-                    <a href="#"><FontAwesomeIcon icon={faGooglePlus} /> Google+</a>
-                  </li>
-                  <li className="twitter">
-                    <a href="#"><FontAwesomeIcon icon={faTwitter} /> Twitter</a>
-                  </li>
-                  <li className="pinterest">
-                    <a href="#"><FontAwesomeIcon icon={faPinterest} /> Pinterest</a>
-                  </li>
-                </ul>
-              </article>
-              <article className="col-4">
-                <h3>Newsletter</h3>
-                <p>Sign up for our newsletter to get school updates and news</p>
-                <form onSubmit={handleSubscribe}>
-                  <input
-                    type="email"
-                    placeholder="Email address..."
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                  />
-                  <button type="submit">Subscribe</button>
-                </form>
-                {error && <p className="error">{error}</p>}
-              </article>
-            </section>
-            <p className="copy">Copyright 2024 WOCLIF School Of Health Technology. All rights reserved.</p>
+    <div className="book-search-container">
+           <div className="bookbg">
+      <div className="search-bar">
+          <div className="searchinputcon">
+          <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for books"
+          className={`search-input ${inputError ? "error" : ""}`}
+        />
+          <span onClick={handleSearch} disabled={!query.trim()} className="search-button">  <FontAwesomeIcon icon={faSearch} />          </span>
           </div>
-        </footer>
       </div>
-      </div>
+           </div>
+      {inputError && <p className="error-message">{errorMessage}</p>}
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <div className="books-container">
+          {message && <p>{message}</p>}
+          {books.map((book, index) => (
+            <div key={index} className="book-card">
+              <h3>{book.title || book.volumeInfo.title}</h3>
+              <p>
+                {book.authors
+                  ? book.authors.map((author) => author.name).join(", ")
+                  : book.volumeInfo.authors.join(", ")}
+              </p>
+              {book.formats && book.formats["image/jpeg"] && (
+                <img src={book.formats["image/jpeg"]} alt={book.title} className="book-image" />
+              )}
+              {book.volumeInfo &&
+                book.volumeInfo.imageLinks &&
+                book.volumeInfo.imageLinks.thumbnail && (
+                  <img
+                    src={book.volumeInfo.imageLinks.thumbnail}
+                    alt={book.volumeInfo.title}
+                    className="book-image"
+                  />
+                )}
+              {book.formats && book.formats["text/html"] && (
+                 <a
+                  href={book.formats["text/html"]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="book-link"
+                >
+                  Read
+                </a>
+              )}
+              {book.formats && book.formats["application/epub+zip"] && (
+                <a
+                  href={book.formats["application/epub+zip"]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="book-link"
+                >
+                  Download EPUB
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <Bookpage/>
     </div>
   );
-}
+};
 
-export default Home;
+export default BookSearch;

@@ -22,6 +22,7 @@ function Home() {
           params: {
             country: 'ng', // Fetching news from Nigeria
             apiKey: 'd7e4d24c88ea456db4f9c6b5d77887ee'
+
           }
         });
 
@@ -71,13 +72,14 @@ function Home() {
       <div className="home">
         <div className="hometext">
           <h2>
-            Empowering Future Health Innovators For <em> Sustainer</em> Public
+            Empowering Future Health Innovators For Sustainer  Public
             Health Care
           </h2>
-          <button>Library</button>
+          <Link className="button" to="bookpage">Library</Link> 
         </div>
       </div>
 
+      <div className="con-side-pad">
       <main>
         <div className="sub-main">
           <section className="posts">
@@ -125,7 +127,7 @@ function Home() {
               <h2>Latest news</h2>
               <div className="newsarticlecon">
                 {latestNews.map((article, index) => (
-                  <article key={index}>
+                  <article className="articles" key={index}>
                     <div className="pic">
                       <img src={article.urlToImage || img} alt="News" onError={(e) => { e.target.onerror = null; e.target.src = img; }} />
                     </div>
@@ -239,7 +241,7 @@ function Home() {
           </div>
         </footer>
       </div>
-
+      </div>
     </div>
   );
 }
