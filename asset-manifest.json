@@ -1,18 +1,19 @@
 {
   "files": {
-    "main.css": "/WOCLIF/static/css/main.13e8e8e7.css",
-    "main.js": "/WOCLIF/static/js/main.a9790f61.js",
+    "main.css": "/WOCLIF/static/css/main.c02e90b9.css",
+    "main.js": "/WOCLIF/static/js/main.694592b3.js",
+    "static/media/neom-gOqBe7ropxM-unsplash.jpg": "/WOCLIF/static/media/neom-gOqBe7ropxM-unsplash.511c89c9062cec51b53d.jpg",
+    "static/media/conny-schneider-2-kXLvGOU5A-unsplash.jpg": "/WOCLIF/static/media/conny-schneider-2-kXLvGOU5A-unsplash.3e7619d8580781661bfb.jpg",
     "static/media/home.jpg": "/WOCLIF/static/media/home.0c7180386ca9923ba35c.jpg",
     "static/media/telephone-612061.jpg": "/WOCLIF/static/media/telephone-612061.4092feddf05fe6eff8da.jpg",
     "static/media/Schlogo.png": "/WOCLIF/static/media/Schlogo.909c56334a08a126c3c3.png",
     "static/media/man-1853545_1280.jpg": "/WOCLIF/static/media/man-1853545_1280.846f702680ba669b2fce.jpg",
-    "static/media/news.png": "/WOCLIF/static/media/news.d34c1e07ed9835375cc2.png",
     "index.html": "/WOCLIF/index.html",
-    "main.13e8e8e7.css.map": "/WOCLIF/static/css/main.13e8e8e7.css.map",
-    "main.a9790f61.js.map": "/WOCLIF/static/js/main.a9790f61.js.map"
+    "main.c02e90b9.css.map": "/WOCLIF/static/css/main.c02e90b9.css.map",
+    "main.694592b3.js.map": "/WOCLIF/static/js/main.694592b3.js.map"
   },
   "entrypoints": [
-    "static/css/main.13e8e8e7.css",
-    "static/js/main.a9790f61.js"
+    "static/css/main.c02e90b9.css",
+    "static/js/main.694592b3.js"
   ]
 }

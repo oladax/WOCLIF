@@ -9,12 +9,11 @@ import { faMapMarkerAlt, faEnvelope, faPhone } from '@fortawesome/free-solid-svg
 import { faFacebook, faGooglePlus, faTwitter, faPinterest } from '@fortawesome/free-brands-svg-icons';
 import { Link } from "react-router-dom";
 import write from '../Images/ico_information.png';
-import emailjs from 'emailjs-com';
+import Subscribe from "./Subscribe";
 
 function Home() {
   const [latestNews, setLatestNews] = useState([]);
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -36,43 +35,11 @@ function Home() {
     fetchNews();
   }, []);
 
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-
-    if (!email) {
-      setError('Please enter your email address');
-      return;
-    }
-
-    const templateParams = {
-      message: email
-    };
-
-    
-    try {
-      await emailjs.send(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-        templateParams,
-        process.env.REACT_APP_EMAILJS_USER_ID
-      );
-
-      alert('Subscription request sent successfully!');
-      setEmail('');
-      setError('');
-    } catch (error) {
-      setError('Failed to subscribe. Please try again later.');
-      console.error('Error:', error);
-    }
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setError('');
-  };
+ 
 
   return (
     <div className="homecon">
+
       <div className="home">
         <div className="hometext">
           <h2>
@@ -228,17 +195,7 @@ function Home() {
                 <article className="col-4">
                   <h3>Newsletter</h3>
                   <p>Sign up for our newsletter to get school updates and news</p>
-                  <form onSubmit={handleSubscribe}>
-                    <input
-                      type="email"
-                      placeholder="Email address..."
-                      value={email}
-                      onChange={handleEmailChange}
-                      required
-                    />
-                    <button type="submit">Subscribe</button>
-                  </form>
-                  {error && <p className="error">{error}</p>}
+                 <div><Subscribe/></div>
                 </article>
               </section>
               <p className="copy">Copyright 2024 WOCLIF School Of Health Technology. All rights reserved.</p>
