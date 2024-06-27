@@ -1,728 +1,249 @@
-.homecon{
-}
-
-.home {
-    background: url('../Images/home.jpg') no-repeat center center;
-    background-size: cover;
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-    position: relative;
-}
-
-.hometext {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    padding-left: 10px;
-  padding-right: 10px;
-}
-
-.hometext h2 {
-    color: #fff;
-    font-family: "Playfair Display", serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 2.1em;
-    letter-spacing: 2px;
-    line-height: 60px;
-    text-align: center;
-    text-transform: capitalize;
-    margin-bottom: 60px;
-    margin-top: 25px;
-
-}
-
-
-
-.hometext .button{
-    border: none;
-            background-color: white;
-            color: black;
-            cursor: pointer;
-            border-radius: 5px;
-            padding-left: 50px;
-            padding-right: 50px;
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-decoration: none;
-}
-
-
-/* posts
-------------------------------------------------------------------------------*/
-
-.homecon main {
-    margin-top: 9rem;
-    margin-bottom: 9rem;
-    width: 100%;
-    padding-left: 10px;
-  padding-right: 10px;
-  max-width: 85rem;
-  margin: auto;
-}
-
-.homecon main .sub-main{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
-
-.homecon main .posts{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.posts article {
-    margin-left: 20px;
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.posts .pic {
-    margin-top: 6px;
-}
-
-.posts .info {
-    overflow: hidden;
-	padding-right: 10px;
-}
-
-.posts .info h3 {
-    overflow: hidden;
-	color: #252563;
-	font-size: 22px;
-    font-family: 'BebasNeue';
-	line-height: 34px;
-	padding-bottom: 11px;
-    text-transform: capitalize;
-}
-
-.info p {
-    width: 100%;
-    font-size: 16px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
-}
-
-.icon-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .icon-container::before {
-    content: '';
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: #252563;
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-  }
-  
-  .icon-container .svg-inline--fa {
-    position: relative;
-    z-index: 1;
-    font-size: 40px;
-    color: #fff;
-  }
-  
-
-/* news
-------------------------------------------------------------------------------*/
-.newscon {
-    background-color: rgb(44, 65, 103); /* Background color of the news container */
-    padding: 20px; /* Padding for better spacing */
-  }
-  
-  .latestnews {
-    max-width: 1200px; /* Maximum width of the news section */
-    margin: 0 auto; /* Center the news section */
-  }
-  
-  .news {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-
-  .news article{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    background-color: white;
-    margin-left: 13px;
-    margin-right: 13px;
-}
-
-  
-  .container {
-    width: 100%;
-  }
-  
-  h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 3rem;
-    margin-top: 2rem;
-  }
-  
-  .newsarticlecon {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .articles {
-    background-color: white; /* Background color of the articles */
-    width: 48%;
-    margin-bottom: 20px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for subtle depth */
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden; /* Ensure the text doesn't overflow the container */
-  }
-  
-  article .pic img {
-    width: 100%;
-    max-width: 423px;
-    height: auto;
-    border-radius: 8px 8px 0 0;
-  }
-  
-  article .info {
-    padding: 10px;
-  }
-  
-  article h4 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: rgba(0, 0, 0, 0.966);
-    font-weight: 300;
-    width: 300px;
-  }
-  
-  article .date {
-    color: gray;
-    font-size: 0.9em;
-    margin-bottom: 10px;
-  }
-  
-  article p {
-    margin-bottom: 10px;
-  }
-  
-  a.more {
-    color: blue; /* Link color */
-    text-decoration: none;
-  }
-  
-  a.more:hover {
-    text-decoration: underline;
-  }
-  
-
-
-  
-
-  @media (max-width: 1000px) {
-    .newsarticlecon {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .articles {
-      width: 100%;
-    }
-  }
-  
-
-
-
-/* info-request
-------------------------------------------------------------------------------*/
-
-
-.info-div{
-    padding-top: 4rem;
-    max-width: 85rem;
-    width: 100%;
-    margin: auto;
-    padding-bottom: 4rem;
-}
-
-.info-div .container  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.info-div .container .info-con{
-    display: flex;
-    justify-content: center;
-    align-items: center;
- background: rgb(44, 65, 103);
-    color: white;
-}
-
-.info-con div{
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-}
-
-.info-con div .title{
-    font-size: 35px;
-    margin-bottom: 10px;
-    font-family: 'BebasNeue';
-}
-
-.info-con div .text{
-    width: 100%;
-    font-size: 16px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.info-con img{
-    object-fit: cover;
-    padding-left: 10px;
-}
-
-.redirect{
-    background-color: #008bc4;
-    height: 117px;
-    text-align: center;
-    width: 200px;
-    position: relative;}
-
-.redirect .arrow{
-    font-size: 50px;
-    position: absolute;
-    top: 26%;
-    left: 78px;
-    color: white;}
-
-
-/* Footer
-------------------------------------------------------------------------------*/
-
-#footer {
-    background-color: #f8f8f8;
-    padding: 20px 0;
-}
-
-#footer .container {
-    width: 90%;
-    max-width: 85rem;
-    margin: auto;
-}
-
-#footer section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-#footer article {
-    flex: 1;
-    min-width: 250px;
-    margin: 10px;
-}
-
-#footer h3 {
-    margin-bottom: 30px;
-    font-size: 30px;
-    font-weight: 400;
-    font-family: 'Playfair Display';
-  }
-
-
-#footer ul {
-    list-style: none;
-    padding: 0;
-}
-
-#footer ul li {
-    margin-bottom: 20px;
-    display: inline-block;
-    margin-right: 16px;
-}
-
-#footer ul li a {
-    text-decoration: none;
-    color: #333;
-    display: flex;
-    align-items: center;
-    font-size: 16.5px;
-}
-
-#footer ul li a svg {
-    margin-right: 6px;
-    color: #252563;
-    font-size: 18px;
-}
-
-.col-3 p, .col-4 p{
-    padding-bottom: 14px;
-}
-
-#footer .copy {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 13px;
-    color: #666;
-}
-
-#footer form{
-    flex-wrap: wrap;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#footer form input[type="email"] {
-    flex: 1;
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #666;
-    border-radius: 3px;
-}
-
-#footer form button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 3px;
-    background-color: #333;
-    color: #fff;
-    cursor: pointer;
-   
-}
-
-.con-side-pad{
-   
-}
-
-@media (max-width: 1423px) {
-    footer form button {
-        padding: 12px 64px;
-        border: none;
-        border-radius: 3px;
-        background-color: #333;
-        color: #fff;
-        cursor: pointer;
-        margin: 20px;
-    }
-}
-
-
-@media (max-width: 1000px) {
-    .homecon main .posts, .newsarticlecon{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .homecon main {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-        width: 100%;
-      
-    }
-
-     .posts article{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
-    margin-bottom: 2rem;}
-
-    .news article{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        background-color: white;
-    }
-
-    .posts .info h3 {
-        overflow: hidden;
-        color: #252563;
-        font-size: 27px;
-        font-family: emoji;
-        line-height: 34px;
-        padding-bottom: 11px;
-        text-transform: capitalize;
+import React, { useEffect, useState } from "react";
+import "./Home.css";
+import { faArrowRight, faBook, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from 'axios';
+import img from '../Images/news.png'; // Fallback image
+import Books from "./Books";
+import { faMapMarkerAlt, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faGooglePlus, faTwitter, faPinterest } from '@fortawesome/free-brands-svg-icons';
+import { Link } from "react-router-dom";
+import write from '../Images/ico_information.png'
+
+function Home() {
+  const [latestNews, setLatestNews] = useState([]);
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get('https://newsapi.org/v2/top-headlines', {
+          params: {
+            country: 'ng', // Fetching news from Nigeria
+            apiKey: 'd7e4d24c88ea456db4f9c6b5d77887ee'
+
+          }
+        });
+
+        setLatestNews(response.data.articles.slice(0, 2)); // Display the first two news articles
+
+      } catch (error) {
+        console.error('Error fetching the news data', error);
       }
+    };
 
-      #footer h3{
-        font-size: 27px;
+    fetchNews();
+  }, []);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+
+    if (!email) {
+      setError('Please enter your email address');
+      return;
     }
 
-      .news h2{
-        color: white;
-        margin: 13px;
-        font-size: 30px;
-        font-family: "Playfair Display", serif;
+    const data = { email };
+
+    try {
+      const response = await axios.post('http://localhost:3002/subscribe-email', data);
+
+      if (response.status === 200) {
+        alert('Subscription request sent successfully!');
+        setEmail('');
+        setError('');
+      } else {
+        setError('Failed to subscribe. Please try again later.');
       }
-
-      .info-con div .title {
-        font-size: 27px;
-        margin-bottom: 10px;
-        font-family: 'BebasNeue';
+    } catch (error) {
+      setError('Failed to subscribe. Please try again later.');
+      console.error('Error:', error);
     }
+  };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setError('');
+  };
+
+  return (
+    <div className="homecon">
+      <div className="home">
+        <div className="hometext">
+          <h2>
+            Empowering Future Health Innovators For Sustainer  Public
+            Health Care
+          </h2>
+          <Link className="button" to="bookpage">Library</Link> 
+        </div>
+      </div>
+
+      <div className="con-side-pad">
+      <main>
+        <div className="sub-main">
+          <section className="posts">
+            <article>
+              <div className="pic">
+                <div className="icon-container">
+                  <FontAwesomeIcon icon={faGraduationCap} />
+                </div>
+              </div>
+              <div className="info">
+                <h3>The best learning methods</h3>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                  accusantium doloremque laudantium, totam rem aperiam, eaque
+                  ipsa quae ab illo inventore veritatis quasi architecto beatae
+                  vitae dicta sunt explicabo.
+                </p>
+              </div>
+            </article>
+
+            <article>
+              <div className="pic">
+                <div className="icon-container">
+                  <FontAwesomeIcon icon={faBook} />
+                </div>
+              </div>
+              <div className="info">
+                <h3>Awesome results of our students</h3>
+                <p>
+                  Vero eos et accusamus et iusto odio dignissimos ducimus
+                  blanditiis praesentium voluptatum deleniti atque corrupti quos
+                  dolores et quas molestias excepturi sint occaecati cupiditate
+                  non provident, similique sunt in culpa.
+                </p>
+              </div>
+            </article>
+          </section>
+        </div>
+      </main>
+
+      <div className="newscon">
+        <div className="latestnews">
+          <section className="news">
+            <div className="container">
+              <h2>Latest news</h2>
+              <div className="newsarticlecon">
+                {latestNews.map((article, index) => (
+                  <article className="articles" key={index}>
+                    <div className="pic">
+                      <img src={article.urlToImage || img} alt="News" onError={(e) => { e.target.onerror = null; e.target.src = img; }} />
+                    </div>
+                    <div className="info">
+                      <h4>{article.title}</h4>
+                      <p className="date">{new Date(article.publishedAt).toLocaleDateString()} - {article.author || 'Unknown'}</p>
+                      <p>{article.description}</p>
+                      <a className="more" href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div className="Famous-book">
+        <h2>Famous Science Books</h2>
+        <Books />
+      </div>
+
+      <div className="info-div">
+        <div className="container">
+
+          <div className="info-con">
+            <img src={write} alt="" />
+            <div>
+            <span className="title">Request information</span>
+            <span className="text">Do you have some questions? Fill the form and get an answer!</span>
+            </div>
+              </div>
+
+            <div className="redirect">
+              <Link className="arrow" to="/contact">
+              <FontAwesomeIcon icon={faArrowRight} />
+              </Link>
+            </div>
+        </div>
+      </div>
+
+      <div className="footerpart">
+        <footer id="footer">
+          <div className="container">
+            <section>
+              <article className="col-1">
+                <h3>Contact</h3>
+                <ul>
+                  <li className="address">
+                    <a href="#">
+                      <FontAwesomeIcon icon={faMapMarkerAlt} /> 151 W Adams St  Detroit, MI 48226
+                    </a>
+                  </li>
+                  <li className="mail">
+                    <a href="#">
+                      <FontAwesomeIcon icon={faEnvelope} /> contact@harrisonuniversity.com
+                    </a>
+                  </li>
+                  <li className="phone last">
+                    <a href="#">
+                      <FontAwesomeIcon icon={faPhone} /> (971) 536 845 924
+                    </a>
+                  </li>
+                </ul>
+              </article>
+              <article className="col-2">
+                <h3>Forum topics</h3>
+                <ul>
+                  <li><a href="#">Omnis iste natus error sit</a></li>
+                  <li><a href="#">Nam libero tempore cum soluta</a></li>
+                  <li><a href="#">Totam rem aperiam eaque </a></li>
+                  <li><a href="#">Ipsa quae ab illo inventore veritatis </a></li>
+                  <li className="last"><a href="#">Architecto beatae vitae dicta sunt </a></li>
+                </ul>
+              </article>
+              <article className="col-3">
+                <h3>Social media</h3>
+                <p>Connect with us on social media and stay updated with the latest news and events.</p>
+                <ul>
+                  <li className="facebook">
+                    <a href="#"><FontAwesomeIcon icon={faFacebook} /> Facebook</a>
+                  </li>
+                  <li className="google-plus">
+                    <a href="#"><FontAwesomeIcon icon={faGooglePlus} /> Google+</a>
+                  </li>
+                  <li className="twitter">
+                    <a href="#"><FontAwesomeIcon icon={faTwitter} /> Twitter</a>
+                  </li>
+                  <li className="pinterest">
+                    <a href="#"><FontAwesomeIcon icon={faPinterest} /> Pinterest</a>
+                  </li>
+                </ul>
+              </article>
+              <article className="col-4">
+                <h3>Newsletter</h3>
+                <p>Sign up for our newsletter to get school updates and news</p>
+                <form onSubmit={handleSubscribe}>
+                  <input
+                    type="email"
+                    placeholder="Email address..."
+                    value={email}
+                    onChange={handleEmailChange}
+                    required
+                  />
+                  <button type="submit">Subscribe</button>
+                </form>
+                {error && <p className="error">{error}</p>}
+              </article>
+            </section>
+            <p className="copy">Copyright 2024 WOCLIF School Of Health Technology. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+      </div>
+    </div>
+  );
 }
 
-@media (max-width: 930px) {
-    .hometext h2{
-        color: #fff;
-        font-family: "Playfair Display", serif;
-        font-optical-sizing: auto;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 1.7em;
-        line-height: 60px;
-        width: 600px;
-        text-align: center;
-        text-transform: capitalize;
-        margin-bottom: 60px;
-        margin-top: 25px;
-    }
-
-
-    .info-con div .title {
-        font-size: 26px;
-        margin-bottom: 10px;
-        font-family: 'BebasNeue';
-    }
-
-    .news h2{
-        color: white;
-        margin: 13px;
-        font-size: 25px;
-        font-family: "Playfair Display", serif;
-      }
-   
-}
-
-  
-
-@media (max-width: 768px) {
-
-    #footer ul li a {
-        text-decoration: none;
-        color: #333;
-        display: flex;
-        align-items: center;
-        font-size: 15px;
-    }
-
-
-.info-div .container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.redirect{
-    background-color: #008bc4;
-    height: 70px;
-    text-align: center;
-    width: 100%;
-    position: relative;
-}
-
-.redirect .arrow{
-    font-size: 50px;
-    position: absolute;
-    top: 10%;
-    left: 170px;
-    color: white;
-
-}
-
-.info-con div .title {
-    font-size: 25px;
-    margin-bottom: 10px;
-    font-family: 'BebasNeue';
-}
-
-@keyframes moveForward {
-    0% {
-      left: 111px;
-    }
-    50% {
-      left: 200px; /* Adjust this value to control how far the element moves */
-    }
-    100% {
-      left: 111px;
-    }
-  }
-
-.info-div .container .info-con {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgb(44, 65, 103);
-    color: white;
-    width: 100%;
-}
-
-    .hometext h2{
-        color: #fff;
-        font-family: "Playfair Display", serif;
-        font-optical-sizing: auto;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 1.5em;
-        line-height: 50px;
-        width: 400px;
-        text-align: center;
-        text-transform: capitalize;
-        margin-bottom: 60px;
-        margin-top: 25px;
-
-    }
-
-    #footer h3{
-        font-size: 20px;
-    }
-
-    #footer section {
-        flex-direction: row-reverse;
-        padding-left: 10px;     }
-
-    #footer article {
-        min-width: 100%;
-    }
-
-    .icon-container::before{
-        content: '';
-        position: absolute;
-        width: 80px;
-        height: 80px;
-        background: #252563;
-        clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-    }
-
-    .posts .info h3 {
-        overflow: hidden;
-        color: #252563;
-        font-size: 20px;
-        font-family: emoji;
-        line-height: 34px;
-        padding-bottom: 11px;
-        text-transform: capitalize;
-      }
-
-      .news h2{
-        color: white;
-        margin: 13px;
-        font-size: 20px;
-        font-family: "Playfair Display", serif;
-      }
-}
-
-
-@media (max-width: 600px) {
-    .hometext h2{
-        color: #fff;
-        font-family: "Playfair Display", serif;
-        font-optical-sizing: auto;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 1.3em;
-        line-height: 40px;
-        width: 300px;
-        text-align: center;
-        text-transform: capitalize;
-        margin-bottom: 60px;
-        margin-top: 25px;
-
-    }
-    .posts article{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        flex-direction: column;
-    }
-
-
-    .news article{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        flex-direction: column;
-        background-color: white;
-    }
-    .posts .info h3, .info , .news .info{
-        text-align: center;
-    }
-
-    .news .info h4{
-        font-size: 15px;
-        line-height: 16px;
-        font-weight: 200;
-        text-align: center;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    }
-
-    #footer .container{
-        width: 90%;
-        max-width: 85rem;
-    }
-
-    #footer ul li a {
-        text-decoration: none;
-        color: #333;
-        display: flex;
-        align-items: center;
-        font-size: 14.5px;
-    }
-
-   
-}
-
-@media (max-width: 389px) {
-
-
-#footer form button{
-    width: 310px;
-    border: none;
-    border-radius: 3px;
-    background-color: #333;
-    color: #fff;
-    margin-left: -0px;
-    height: 40px;
-    cursor: pointer;}}
-
-@media (max-width: 333px) {
-   
-    #footer form button{
-       
-        margin-top: 15px;
-    }
-
-    #footer form{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: left;
-    }
-}
+export default Home;
