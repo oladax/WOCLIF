@@ -1,99 +1,125 @@
-import React, { useState, useEffect } from 'react';
-import schlogo from '../Images/Schlogo.png';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    const setDocumentTitle = (pathname) => {
-      const descriptions = {
-        '/': 'Home - WOCLIF School of Health Technology',
-        '/bookpage': 'Library - WOCLIF School of Health Technology',
-        '/about': 'About Us - WOCLIF School of Health Technology',
-        '/contact': 'Contact - WOCLIF School of Health Technology',
-        '/account': 'Account - WOCLIF School of Health Technology',
-      };
-
-      document.title = descriptions[pathname] || 'WOCLIF School of Health Technology';
-    };
-
-    setDocumentTitle(location.pathname);
-  }, [location.pathname]);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  return (
-    <div className="Header-container">
-      <header>
-        <div>
-          <div className="schlogo">
-            <a href="/">
-              <img src={schlogo} alt="School logo" />
-            </a>
-          </div>
-
-          <nav className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
-            <ul>
-              <li>
-                <Link to="/" onClick={closeMenu}>Home</Link>
-              </li>
-              <li>
-                <Link to="/bookpage" onClick={closeMenu}>Library</Link>
-              </li>
-              <li>
-                <Link to="/about" onClick={closeMenu}>About</Link>
-              </li>
-              <li>
-                <Link to="/contact" onClick={closeMenu}>Contact</Link>
-              </li>
-              <li>
-                <span onClick={closeMenu}>Account</span>
-              </li>
-            </ul>
-          </nav>
-
-          <nav className="main-nav">
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/bookpage">Library</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact</Link>
-              </li>
-              <li>
-                <Link to="/account">Account</Link>
-              </li>
-            </ul>
-          </nav>
-
-          <div className="dropicon" onClick={toggleMenu}>
-            <span>
-              <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
-            </span>
-          </div>
-        </div>
-      </header>
-      <div>
-        <Outlet />
-      </div>
-    </div>
-  );
+.reset-password {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f9;
+  padding: 20px;
 }
 
-export default Header;
+.reset-container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+
+.input-container input {
+  border: none;
+  background: none;
+  padding: 10px;
+  flex: 1;
+  outline: none;
+}
+
+.input-error {
+  border: 2px solid red;
+}
+
+.validation-error {
+  color: red;
+  font-size: 12px;
+  text-align: left;
+  margin: -10px 0 10px 10px;
+}
+
+.reset-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+  background-color: #0056b3;
+}
+
+.reset-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.success-message {
+  color: green;
+  margin-top: 20px;
+}
+
+.login-link {
+  margin-top: 20px;
+}
+
+.login-link a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .reset-container {
+    padding: 20px;
+  }
+
+  .input-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-container input {
+    padding: 10px;
+  }
+}
+
+
+
+
+
+
+
