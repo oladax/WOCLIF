@@ -1,125 +1,138 @@
-.reset-password {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f4f4f9;
-  padding: 20px;
-}
+// Import necessary Firebase modules
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword as firebaseSignIn, 
+  onAuthStateChanged, 
+  signOut, 
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  sendPasswordResetEmail,
+  sendEmailVerification
+} from "firebase/auth";
 
-.reset-container {
-  background-color: #ffffff;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-}
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBi6G6VZZZZT4VqTTQ6DyK2ugr89qxLmBc",
+  authDomain: "woclif.firebaseapp.com",
+  projectId: "woclif",
+  storageBucket: "woclif.appspot.com",
+  messagingSenderId: "982842036655",
+  appId: "1:982842036655:web:8020afb3396e5572fa1f5a",
+  measurementId: "G-858H7E09HE"
+};
 
-h2 {
-  color: #333;
-  margin-bottom: 20px;
-}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-p {
-  color: #666;
-  margin-bottom: 20px;
-}
+let currentUser = null; // Store the current signed-in user
 
-.error-message {
-  color: red;
-  margin-bottom: 10px;
-}
-
-.input-group {
-  margin-bottom: 20px;
-}
-
-.input-container {
-  display: flex;
-  align-items: center;
-  background-color: #f1f1f1;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  padding: 10px;
-}
-
-.input-container input {
-  border: none;
-  background: none;
-  padding: 10px;
-  flex: 1;
-  outline: none;
-}
-
-.input-error {
-  border: 2px solid red;
-}
-
-.validation-error {
-  color: red;
-  font-size: 12px;
-  text-align: left;
-  margin: -10px 0 10px 10px;
-}
-
-.reset-button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.reset-button:hover {
-  background-color: #0056b3;
-}
-
-.reset-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.success-message {
-  color: green;
-  margin-top: 20px;
-}
-
-.login-link {
-  margin-top: 20px;
-}
-
-.login-link a {
-  color: #007bff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.login-link a:hover {
-  color: #0056b3;
-}
-
-@media (max-width: 768px) {
-  .reset-container {
-    padding: 20px;
+const checkIfUserExists = async (email) => {
+  try {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.size > 0;
+  } catch (error) {
+    console.error("Error checking if user exists:", error.message);
+    throw error;
   }
+};
 
-  .input-container {
-    flex-direction: column;
-    align-items: stretch;
+const checkIfEmailVerified = async (email) => {
+  const user = auth.currentUser;
+  if (user) {
+    await user.reload();
+    return user.email === email && user.emailVerified;
+  } else {
+    return false;
   }
+};
 
-  .input-container input {
-    padding: 10px;
+const signUpWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    currentUser = userCredential.user;
+    await sendEmailVerification(currentUser);
+    console.log("User signed up:", currentUser);
+  } catch (error) {
+    console.error("Error signing up:", error.message);
+    throw error;
   }
-}
+};
 
+const signInWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await firebaseSignIn(auth, email, password);
+    currentUser = userCredential.user;
+    console.log("User signed in:", currentUser);
+  } catch (error) {
+    console.error("Error signing in:", error.message);
+    throw error;
+  }
+};
 
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    currentUser = result.user;
+    console.log("User signed in with Google:", currentUser);
+  } catch (error) {
+    console.error("Error signing in with Google:", error.message);
+    throw error;
+  }
+};
 
+const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    console.error("Error resetting password:", error.message);
+    throw error;
+  }
+};
 
+const signOutUser = async () => {
+  try {
+    await signOut(auth);
+    currentUser = null;
+    console.log("User signed out");
+  } catch (error) {
+    console.error("Error signing out:", error.message);
+  }
+};
 
+const checkAuthState = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      console.log("User is signed in:", user);
+    } else {
+      currentUser = null;
+      console.log("User is signed out");
+    }
+  });
+};
 
+const getCurrentUser = () => {
+  return currentUser;
+};
 
+checkAuthState(); // Initialize auth state checking
+
+export {
+  auth,
+  signUpWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithGoogle,
+  signOutUser,
+  checkAuthState,
+  resetPassword,
+  checkIfEmailVerified,
+  getCurrentUser,
+  checkIfUserExists
+};

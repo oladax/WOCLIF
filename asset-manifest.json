@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/WOCLIF/static/css/main.79dd51ff.css",
-    "main.js": "/WOCLIF/static/js/main.dfd2fa2e.js",
+    "main.css": "/WOCLIF/static/css/main.779832b2.css",
+    "main.js": "/WOCLIF/static/js/main.bb1435cf.js",
     "static/media/neom-gOqBe7ropxM-unsplash.jpg": "/WOCLIF/static/media/neom-gOqBe7ropxM-unsplash.511c89c9062cec51b53d.jpg",
     "static/media/conny-schneider-2-kXLvGOU5A-unsplash.jpg": "/WOCLIF/static/media/conny-schneider-2-kXLvGOU5A-unsplash.3e7619d8580781661bfb.jpg",
     "static/media/home.jpg": "/WOCLIF/static/media/home.0c7180386ca9923ba35c.jpg",
     "static/media/Schlogo.png": "/WOCLIF/static/media/Schlogo.909c56334a08a126c3c3.png",
     "static/media/man-1853545_1280.jpg": "/WOCLIF/static/media/man-1853545_1280.846f702680ba669b2fce.jpg",
     "index.html": "/WOCLIF/index.html",
-    "main.79dd51ff.css.map": "/WOCLIF/static/css/main.79dd51ff.css.map",
-    "main.dfd2fa2e.js.map": "/WOCLIF/static/js/main.dfd2fa2e.js.map"
+    "main.779832b2.css.map": "/WOCLIF/static/css/main.779832b2.css.map",
+    "main.bb1435cf.js.map": "/WOCLIF/static/js/main.bb1435cf.js.map"
   },
   "entrypoints": [
-    "static/css/main.79dd51ff.css",
-    "static/js/main.dfd2fa2e.js"
+    "static/css/main.779832b2.css",
+    "static/js/main.bb1435cf.js"
   ]
 }
