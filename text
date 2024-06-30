@@ -3,14 +3,11 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { 
   getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword as firebaseSignIn, 
-  onAuthStateChanged, 
+  createUserWithEmailAndPassword,
+  sendEmailVerification as sendVerificationEmail,
+  signInWithEmailAndPassword as signInWithEmail,
   signOut, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  sendPasswordResetEmail,
-  sendEmailVerification
+  sendPasswordResetEmail
 } from "firebase/auth";
 
 // Your Firebase configuration
@@ -24,70 +21,74 @@ const firebaseConfig = {
   measurementId: "G-858H7E09HE"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-let currentUser = null; // Store the current signed-in user
-
-const checkIfUserExists = async (email) => {
+// Function to sign up with email and password
+export const signUpWithEmailAndPassword = async (email, password) => {
   try {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.size > 0;
-  } catch (error) {
-    console.error("Error checking if user exists:", error.message);
-    throw error;
-  }
-};
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      throw new Error("Invalid email format.");
+    }
 
-const checkIfEmailVerified = async (email) => {
-  const user = auth.currentUser;
-  if (user) {
-    await user.reload();
-    return user.email === email && user.emailVerified;
-  } else {
-    return false;
-  }
-};
-
-const signUpWithEmailAndPassword = async (email, password) => {
-  try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    currentUser = userCredential.user;
-    await sendEmailVerification(currentUser);
-    console.log("User signed up:", currentUser);
+    return userCredential.user;
   } catch (error) {
     console.error("Error signing up:", error.message);
     throw error;
   }
 };
 
-const signInWithEmailAndPassword = async (email, password) => {
+
+
+// Function to send email verification
+export const sendEmailVerification = async () => {
   try {
-    const userCredential = await firebaseSignIn(auth, email, password);
-    currentUser = userCredential.user;
-    console.log("User signed in:", currentUser);
+    const user = auth.currentUser;
+    if (user) {
+      await sendVerificationEmail(user);
+    } else {
+      throw new Error("No user found. Please sign in again.");
+    }
+  } catch (error) {
+    console.error("Error sending email verification:", error.message);
+    throw error;
+  }
+};
+
+// Function to sign in with email and password
+export const signInWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmail(auth, email, password);
+    return userCredential.user;
   } catch (error) {
     console.error("Error signing in:", error.message);
     throw error;
   }
 };
 
-const signInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
+// Function to check if email is verified
+export const checkIfEmailVerified = async (email) => {
   try {
-    const result = await signInWithPopup(auth, provider);
-    currentUser = result.user;
-    console.log("User signed in with Google:", currentUser);
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    const userRecord = querySnapshot.docs[0]?.data();
+
+    if (!userRecord) {
+      throw new Error("User not found.");
+    }
+
+    return userRecord.emailVerified;
   } catch (error) {
-    console.error("Error signing in with Google:", error.message);
+    console.error("Error checking email verification:", error.message);
     throw error;
   }
 };
 
-const resetPassword = async (email) => {
+// Function to reset password
+export const resetPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
   } catch (error) {
@@ -96,43 +97,26 @@ const resetPassword = async (email) => {
   }
 };
 
-const signOutUser = async () => {
+// Function to check if user exists
+export const checkIfUserExists = async (email) => {
   try {
-    await signOut(auth);
-    currentUser = null;
-    console.log("User signed out");
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty; // Return true if user exists
   } catch (error) {
-    console.error("Error signing out:", error.message);
+    console.error("Error checking user existence:", error.message);
+    throw error;
   }
 };
 
-const checkAuthState = () => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      currentUser = user;
-      console.log("User is signed in:", user);
-    } else {
-      currentUser = null;
-      console.log("User is signed out");
-    }
-  });
+// Function to sign out user
+export const signOutUser = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Error signing out:", error.message);
+    throw error;
+  }
 };
 
-const getCurrentUser = () => {
-  return currentUser;
-};
-
-checkAuthState(); // Initialize auth state checking
-
-export {
-  auth,
-  signUpWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithGoogle,
-  signOutUser,
-  checkAuthState,
-  resetPassword,
-  checkIfEmailVerified,
-  getCurrentUser,
-  checkIfUserExists
-};
+export { auth };
