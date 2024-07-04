@@ -1,194 +1,115 @@
-import React, { useState, useEffect } from 'react';
-import schlogo from '../Images/Schlogo.png';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { auth, signOutUser } from '../firebase'; // Import auth and sign out function
-import { library } from '@fortawesome/fontawesome-svg-core';
+// Import necessary Firebase modules
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword,
+  sendEmailVerification as sendVerificationEmail,
+  signInWithEmailAndPassword as signInWithEmail,
+  signOut, 
+  sendPasswordResetEmail
+} from "firebase/auth";
 
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const location = useLocation();
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBi6G6VZZZZT4VqTTQ6DyK2ugr89qxLmBc",
+  authDomain: "woclif.firebaseapp.com",
+  projectId: "woclif",
+  storageBucket: "woclif.appspot.com",
+  messagingSenderId: "982842036655",
+  appId: "1:982842036655:web:8020afb3396e5572fa1f5a",
+  measurementId: "G-858H7E09HE"
+};
 
-  const navigate = useNavigate();
-  const isLoggedIned = !!auth.currentUser;
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  useEffect(() => {
-    const setDocumentTitle = (pathname) => {
-      const descriptions = {
-        '/': 'Home - WOCLIF School of Health Technology',
-        '/bookpage': 'Library - WOCLIF School of Health Technology',
-        '/about': 'About Us - WOCLIF School of Health Technology',
-        '/contact': 'Contact - WOCLIF School of Health Technology',
-        '/account': 'Account - WOCLIF School of Health Technology',
-        '/login': 'Login - WOCLIF School of Health Technology',
-        '/registration': 'Registration - WOCLIF School of Health Technology',
-      };
-
-      document.title = descriptions[pathname] || 'WOCLIF School of Health Technology';
-    };
-
-    setDocumentTitle(location.pathname);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    // Listen for changes in authentication state
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsLoggedIn(!!user);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const handleClick = () => {
-    toggleCollapse();
-    closeMenu();
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await signOutUser();
-      setIsLoggedIn(false);
-      toggleCollapse();
-    } catch (error) {
-      console.error('Error signing out:', error);
+// Function to sign up with email and password
+export const signUpWithEmailAndPassword = async (email, password) => {
+  try {
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      throw new Error("Invalid email format.");
     }
-  };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsCollapsed(false);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  const handleLibraryClick = () => {
-    
-    if (isLoggedIned) {
-      navigate('/bookpage');
-    } else {
-      navigate('/login');
-    }
-  };
-
-  const handlecontactClick = () => {
-    
-    if (isLoggedIned) {
-      navigate('/contact');
-    } else {
-      navigate('/login');
-    }
-  };
-
-  const handleallClick = () => {
-      closeMenu();
-      handlecontactClick();
-      handleLibraryClick();
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error("Error signing up:", error.message);
+    throw error;
   }
+};
 
-  return (
-    <div className="Header-container">
-      <div className="bg">
-        <header>
-          <div>
-            <div className="schlogo">
-              <a href="/">
-                <img src={schlogo} alt="School logo" />
-              </a>
-            </div>
 
-            <nav className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
-              <ul>
-                <li>
-                  <Link to="/" onClick={closeMenu}>Home</Link>
-                </li>
-                <li>
-                  <Link to="/bookpage" onClick={closeMenu}>Library</Link>
-                </li>
-                <li>
-                  <Link to="/about" onClick={closeMenu}>About</Link>
-                </li>
-                <li>
-                  <Link to="/contact" onClick={closeMenu}>Contact</Link>
-                </li>
-                <li>
-                  <span className="account-header" onClick={handleClick}>Account</span>
-                </li>
-              </ul>
-            </nav>
 
-            <nav className="main-nav">
-              <ul>
-                <li>
-  
-                <Link  to="/">Home</Link>
-                </li>
-                <li>
-                  <span className="account-header"  onClick={handleLibraryClick}>Library</span>
-                </li>
-                <li>
-                  <Link to="/about">About</Link>
-                </li>
-                <li>
-                  <span className="account-header"  onClick={handlecontactClick}>Contact</span>
-                </li>
-                <li>
-                  <span className="account-header" onClick={toggleCollapse}>Account</span>
-                </li>
-              </ul>
-            </nav>
+// Function to send email verification
+export const sendEmailVerification = async () => {
+  try {
+    const user = auth.currentUser;
+    if (user) {
+      await sendVerificationEmail(user);
+    } else {
+      throw new Error("No user found. Please sign in again.");
+    }
+  } catch (error) {
+    console.error("Error sending email verification:", error.message);
+    throw error;
+  }
+};
 
-            <div className="dropicon" onClick={toggleMenu}>
-              <span>
-                <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
-              </span>
-            </div>
-          </div>
-        </header>
-        {isCollapsed && (
-          <div className="collapsible-container">
-            {isLoggedIn ? (
-              <div className='Account-detail'>
-                <p>Name: {auth.currentUser.displayName || (auth.currentUser.email.split('@')[0])}</p>
-                <p>Email: {auth.currentUser.email}</p>
-                <p>Date: {new Date().toLocaleDateString()}</p>
-                <button onClick={handleSignOut}>Sign Out</button>
-              </div>
-            ) : (
-              <>
-                <div><h2 className='getstarted'>Get Started</h2></div>
-                <div className="collapsible-containers">
-                  <Link onClick={handleClick} to="/login" className="dropdown-link">Login</Link>
-                  <Link onClick={handleClick} to="/registration" className="dropdown-link">Register</Link>
-                </div>
-              </>
-            )}
-          </div>
-        )}
-        <div>
-          <Outlet />
-        </div>
-      </div>
-    </div>
-  );
-}
+// Function to sign in with email and password
+export const signInWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmail(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error("Error signing in:", error.message);
+    throw error;
+  }
+};
 
-export default Header;
+// Function to check if email is verified
+const checkIfEmailVerified = async (email) => {
+  const user = auth.currentUser;
+  if (user) {
+    await user.reload();
+    return user.email === email && user.emailVerified;
+  } else {
+    return false;
+  }
+};
+
+// Function to reset password
+export const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    console.error("Error resetting password:", error.message);
+    throw error;
+  }
+};
+
+// Function to check if user exists
+export const checkIfUserExists = async (email) => {
+  try {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty; // Return true if user exists
+  } catch (error) {
+    console.error("Error checking user existence:", error.message);
+    throw error;
+  }
+};
+
+// Function to sign out user
+export const signOutUser = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Error signing out:", error.message);
+    throw error;
+  }
+};
+
+export { auth, checkIfEmailVerified };

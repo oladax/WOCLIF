@@ -1,239 +1,89 @@
-import React, { useEffect, useState } from "react";
-import "./Home.css";
-import { faArrowRight, faBook, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from 'axios';
-import Books from "./Books";
-import { faMapMarkerAlt, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faGooglePlus, faTwitter, faPinterest } from '@fortawesome/free-brands-svg-icons';
+// ResetPassword.jsx
+
+import React, { useState } from "react";
+import { resetPassword, checkIfUserExists } from "../firebase";
 import { Link } from "react-router-dom";
-import write from '../Images/ico_information.png';
-import img1 from '../Images/conny-schneider-2-kXLvGOU5A-unsplash.jpg'; // Image for the first quote
-import img2 from '../Images/neom-gOqBe7ropxM-unsplash.jpg'; // Image for the second quote
-import Subscribe from "./Subscribe";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import "./ResetPassword.css";
 
-function Home() {
-  const [quotes, setQuotes] = useState([]);
-  const [currentQuotes, setCurrentQuotes] = useState([]);
+function ResetPassword() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(null);
+  const [resetSuccess, setResetSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [loadingResetPassword, setLoadingResetPassword] = useState(false);
 
-  useEffect(() => {
-    const fetchQuotes = async () => {
-      try {
-        const response = await axios.get('https://api.quotable.io/quotes', {
-          params: {
-            limit: 10 // Fetching ten quotes to have a pool of quotes to cycle through
-          }
-        });
+  const handleEmailChange = (e) => setEmail(e.target.value);
 
-        const fetchedQuotes = response.data.results.map((quote, index) => ({ ...quote, index }));
+  const handleResetPassword = async () => {
+    setError(null);
+    setResetSuccess(false);
+    setShowError(false);
 
-        setQuotes(fetchedQuotes);
+    if (!email) {
+      setShowError(true);
+      return;
+    }
 
-        // Initial setting of current quotes
-        if (fetchedQuotes.length >= 2) {
-          setCurrentQuotes([
-            fetchedQuotes[0],
-            fetchedQuotes[1]
-          ]);
-        }
+    try {
+      setLoadingResetPassword(true);
+      const isUserExists = await checkIfUserExists(email);
 
-      } catch (error) {
-        console.error('Error fetching the quotes data', error);
+      if (!isUserExists) {
+        setError("User with this email does not exist.");
+      } else {
+        await resetPassword(email);
+        setResetSuccess(true);
       }
-    };
-
-    fetchQuotes();
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Update current quotes every 10 seconds
-      setCurrentQuotes(prevQuotes => {
-        if (quotes.length >= 2) {
-          const newIndex1 = (prevQuotes[0].index + 2) % quotes.length;
-          const newIndex2 = (prevQuotes[1].index + 2) % quotes.length;
-          return [
-            quotes[newIndex1],
-            quotes[newIndex2]
-          ];
-        } else {
-          return prevQuotes; // Maintain current quotes if not enough quotes fetched
-        }
-      });
-    }, 10000); // Change quotes every 10 seconds
-
-    return () => clearInterval(interval);
-  }, [quotes]);
+    } catch (error) {
+      setError("An error occurred while resetting the password.");
+    } finally {
+      setLoadingResetPassword(false);
+    }
+  };
 
   return (
-    <div className="homecon">
-
-      <div className="home">
-        <div className="hometext">
-          <h2>
-            Empowering Future Health Innovators For Sustainer Public
-            Health Care
-          </h2>
-          <Link className="button" to="bookpage">Library</Link>
-        </div>
-      </div>
-
-      <div className="con-side-pad">
-        <main>
-          <div className="sub-main">
-            <section className="posts">
-              <article>
-                <div className="pic">
-                  <div className="icon-container">
-                    <FontAwesomeIcon icon={faGraduationCap} />
-                  </div>
-                </div>
-                <div className="info">
-                  <h3>The best learning methods</h3>
-                  <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                    accusantium doloremque laudantium, totam rem aperiam, eaque
-                    ipsa quae ab illo inventore veritatis quasi architecto beatae
-                    vitae dicta sunt explicabo.
-                  </p>
-                </div>
-              </article>
-
-              <article>
-                <div className="pic">
-                  <div className="icon-container">
-                    <FontAwesomeIcon icon={faBook} />
-                  </div>
-                </div>
-                <div className="info">
-                  <h3>Awesome results of our students</h3>
-                  <p>
-                    Vero eos et accusamus et iusto odio dignissimos ducimus
-                    blanditiis praesentium voluptatum deleniti atque corrupti quos
-                    dolores et quas molestias excepturi sint occaecati cupiditate
-                    non provident, similique sunt in culpa.
-                  </p>
-                </div>
-              </article>
-            </section>
+    <div className="reset-password">
+      <div className="reset-container">
+        <h2>Reset Password</h2>
+        <div className="input-group">
+          <div className="input-container">
+            <FontAwesomeIcon icon={faEnvelope} />
+            <input
+              type="email"
+              required
+              placeholder="Enter your email"
+              value={email}
+              onChange={handleEmailChange}
+              className={showError && !email ? "input-error" : ""}
+            />
           </div>
-        </main>
-
-        <div className="newscon">
-          <div className="latestnews">
-            <section className="news">
-              <div className="container">
-                <h2 className="quote">Random Quotes</h2>
-                <div className="newsarticlecon">
-                  {currentQuotes.length > 0 && (
-                    currentQuotes.map((quote, index) => (
-                      <article className="articles" key={index}>
-                        <div className="pic">
-                          <img src={index % 2 === 0 ? img1 : img2} alt="quote-image" />
-                        </div>
-                        <div className="info">
-                          <h4>{quote.content}</h4>
-                          <p className="date">- {quote.author}</p>
-                        </div>
-                      </article>
-                    ))
-                  )}
-                </div>
-              </div>
-            </section>
-          </div>
+          {showError && !email && (
+            <p className="validation-error">Email is required.</p>
+          )}
         </div>
-
-        <div className="Famous-book">
-          <h2>Famous Science Books</h2>
-          <Books />
-        </div>
-
-        <div className="info-div">
-          <div className="container">
-
-            <div className="info-con">
-              <img src={write} alt="" />
-              <div>
-                <span className="title">Request information</span>
-                <span className="text">Do you have some questions? Fill the form and get an answer!</span>
-              </div>
-            </div>
-
-            <div className="redirect">
-              <Link className="arrow" to="/contact">
-                <FontAwesomeIcon icon={faArrowRight} />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="footerpart">
-          <footer id="footer">
-            <div className="container">
-              <section>
-                <article className="col-1">
-                  <h3>Contact</h3>
-                  <ul>
-                    <li className="address">
-                      <a href="#">
-                        <FontAwesomeIcon icon={faMapMarkerAlt} /> 151 W Adams St  Detroit, MI 48226
-                      </a>
-                    </li>
-                    <li className="mail">
-                      <a href="#">
-                        <FontAwesomeIcon icon={faEnvelope} /> contact@harrisonuniversity.com
-                      </a>
-                    </li>
-                    <li className="phone last">
-                      <a href="#">
-                        <FontAwesomeIcon icon={faPhone} /> (971) 536 845 924
-                      </a>
-                    </li>
-                  </ul>
-                </article>
-                <article className="col-2">
-                  <h3>Forum topics</h3>
-                  <ul>
-                    <li><a href="#">Omnis iste natus error sit</a></li>
-                    <li><a href="#">Nam libero tempore cum soluta</a></li>
-                    <li><a href="#">Totam rem aperiam eaque </a></li>
-                    <li><a href="#">Ipsa quae ab illo inventore veritatis </a></li>
-                    <li className="last"><a href="#">Architecto beatae vitae dicta sunt </a></li>
-                  </ul>
-                </article>
-                <article className="col-3">
-                  <h3>Social media</h3>
-                  <p>Connect with us on social media and stay updated with the latest news and events.</p>
-                  <ul>
-                    <li className="facebook">
-                      <a href="#"><FontAwesomeIcon icon={faFacebook} /> Facebook</a>
-                    </li>
-                    <li className="google-plus">
-                      <a href="#"><FontAwesomeIcon icon={faGooglePlus} /> Google+</a>
-                    </li>
-                    <li className="twitter">
-                      <a href="#"><FontAwesomeIcon icon={faTwitter} /> Twitter</a>
-                    </li>
-                    <li className="pinterest">
-                      <a href="#"><FontAwesomeIcon icon={faPinterest} /> Pinterest</a>
-                    </li>
-                  </ul>
-                </article>
-                <article className="col-4">
-                  <h3>Newsletter</h3>
-                  <p>Sign up for our newsletter to get school updates and news</p>
-                  {/* Include your Subscribe component here */}
-                  <Subscribe/>
-                </article>
-              </section>
-              <p className="copy">Copyright 2024 WOCLIF School Of Health Technology. All rights reserved.</p>
-            </div>
-          </footer>
+        {error && <p className="error-message">{error}</p>}
+        <button
+          onClick={handleResetPassword}
+          disabled={loadingResetPassword}
+          className="reset-button"
+        >
+          {loadingResetPassword ? "Resetting Password..." : "Reset Password"}
+        </button>
+        {resetSuccess && (
+          <p className="success-message">
+            Password reset email sent. Check your inbox.
+          </p>
+        )}
+        <div className="login-link">
+          <p>
+            Remember your password? <Link to="/login">Login here</Link>
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default ResetPassword;
