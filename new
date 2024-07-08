@@ -1,0 +1,54 @@
+import React from "react";
+import Header from './Pages/Header';
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
+import Nopage from "./Pages/Nopage";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import Home from "./Pages/Home";
+import './App.css';
+import BookSearch from "./category/BookSearch";
+import Registration from "./Account/Registration";
+import Login from "./Account/Login";
+import ResetPassword from "./Account/Resetpassword";
+import ProtectedRoute from "./Pages/ProtectedRoute";
+import Admin from "./Account/Admin";
+import PrivateRoute from "./Component/PrivateRoute";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="registration" element={<Registration />} />
+          <Route path="login" element={<Login />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <PrivateRoute path="/admin" element={<Admin />} adminOnly />
+          {/* ProtectedRoute for BookSearch */}
+          <Route
+            path="bookpage"
+            element={
+              <ProtectedRoute>
+                <BookSearch />
+              </ProtectedRoute>
+            }
+          />
+          {/* ProtectedRoute for Contact */}
+          <Route
+            path="contact"
+            element={
+              <ProtectedRoute>
+                <Contact />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        <Route path="*" element={<Nopage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;

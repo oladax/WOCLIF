@@ -1,115 +1,124 @@
-// Import necessary Firebase modules
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword,
-  sendEmailVerification as sendVerificationEmail,
-  signInWithEmailAndPassword as signInWithEmail,
-  signOut, 
-  sendPasswordResetEmail
-} from "firebase/auth";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword, checkIfEmailVerified } from "../firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
+import "./Login.css";
 
-// Your Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBi6G6VZZZZT4VqTTQ6DyK2ugr89qxLmBc",
-  authDomain: "woclif.firebaseapp.com",
-  projectId: "woclif",
-  storageBucket: "woclif.appspot.com",
-  messagingSenderId: "982842036655",
-  appId: "1:982842036655:web:8020afb3396e5572fa1f5a",
-  measurementId: "G-858H7E09HE"
-};
+function Login() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [showError, setShowError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loadingSignIn, setLoadingSignIn] = useState(false);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-// Function to sign up with email and password
-export const signUpWithEmailAndPassword = async (email, password) => {
-  try {
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      throw new Error("Invalid email format.");
+  const handleSignIn = async () => {
+    setError(null);
+    setShowError(false);
+
+    if (!email || !password) {
+      setShowError(true);
+      return;
     }
 
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-  } catch (error) {
-    console.error("Error signing up:", error.message);
-    throw error;
-  }
-};
+    try {
+      setLoadingSignIn(true);
+      const { user, role } = await signInWithEmailAndPassword(email, password);
+      const userVerified = await checkIfEmailVerified(email);
 
-
-
-// Function to send email verification
-export const sendEmailVerification = async () => {
-  try {
-    const user = auth.currentUser;
-    if (user) {
-      await sendVerificationEmail(user);
-    } else {
-      throw new Error("No user found. Please sign in again.");
+      if (!userVerified) {
+        setError("Please verify your email before signing in.");
+        navigate("/verify-email");
+      } else if (role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/bookpage");
+      }
+    } catch (error) {
+      const errorMessage =
+        error.message || "An error occurred while signing in.";
+      setError(errorMessage);
+    } finally {
+      setLoadingSignIn(false);
     }
-  } catch (error) {
-    console.error("Error sending email verification:", error.message);
-    throw error;
-  }
-};
+  };
 
-// Function to sign in with email and password
-export const signInWithEmailAndPassword = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmail(auth, email, password);
-    return userCredential.user;
-  } catch (error) {
-    console.error("Error signing in:", error.message);
-    throw error;
-  }
-};
+  return (
+    <div className="login">
+      <div className="login-container">
+        <h2>LOGIN</h2>
+        <p>If you've created an account already, please enter your details.</p>
+        {error && <p className="error">{error}</p>}
+        <div className="input-group">
+          <div className="input-container">
+            <FontAwesomeIcon icon={faEnvelope} />
+            <input
+              type="email"
+              required
+              placeholder="Email"
+              value={email}
+              onChange={handleEmailChange}
+              className={showError && !email ? "input-error" : ""}
+            />
+          </div>
+          {showError && !email && (
+            <span className="red-error">Email is required.</span>
+          )}
 
-// Function to check if email is verified
-const checkIfEmailVerified = async (email) => {
-  const user = auth.currentUser;
-  if (user) {
-    await user.reload();
-    return user.email === email && user.emailVerified;
-  } else {
-    return false;
-  }
-};
+          <div className="input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              required
+              value={password}
+              onChange={handlePasswordChange}
+              className={showError && !password ? "input-error" : ""}
+            />
+            <FontAwesomeIcon
+              icon={showPassword ? faEyeSlash : faEye}
+              onClick={togglePasswordVisibility}
+              className="toggle-password"
+            />
+          </div>
+          {showError && !password && (
+            <span className="red-error">Password is required.</span>
+          )}
+        </div>
 
-// Function to reset password
-export const resetPassword = async (email) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-  } catch (error) {
-    console.error("Error resetting password:", error.message);
-    throw error;
-  }
-};
+        <div className="reset-password-link">
+          <p>
+            <Link to="/reset-password">Forgot Password?</Link>
+          </p>
+        </div>
 
-// Function to check if user exists
-export const checkIfUserExists = async (email) => {
-  try {
-    const q = query(collection(db, "users"), where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty; // Return true if user exists
-  } catch (error) {
-    console.error("Error checking user existence:", error.message);
-    throw error;
-  }
-};
+        <div className="btn">
+          <button
+            onClick={handleSignIn}
+            disabled={loadingSignIn}
+            className="signin-button"
+          >
+            {loadingSignIn ? "Signing In..." : "Sign In"}
+          </button>
+        </div>
 
-// Function to sign out user
-export const signOutUser = async () => {
-  try {
-    await signOut(auth);
-  } catch (error) {
-    console.error("Error signing out:", error.message);
-    throw error;
-  }
-};
+        <div className="register-link">
+          <p>
+            Don't have an account? <Link to="/registration">Register here</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-export { auth, checkIfEmailVerified };
+export default Login;
