@@ -1,0 +1,324 @@
+import React, { useEffect, useState } from "react";
+import "./Home.css";
+import {
+  faArrowRight,
+  faBook,
+  faGraduationCap,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import Books from "./Books";
+import {
+  faMapMarkerAlt,
+  faEnvelope,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook,
+  faTwitter,
+  faPinterest,
+  faInstagram,
+  faTiktok,
+} from "@fortawesome/free-brands-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+import write from "../Images/ico_information.png";
+import img1 from "../Images/conny-schneider-2-kXLvGOU5A-unsplash-min.jpg";
+import img2 from "../Images/neom-gOqBe7ropxM-unsplash-min.jpg";
+import Subscribe from "./Subscribe";
+import { auth } from "../firebase";
+import Header from "../Pages/Header";
+
+function Home() {
+  const [quotes, setQuotes] = useState([]);
+  const [currentQuotes, setCurrentQuotes] = useState([
+    {
+      content: "The best way to predict the future is to invent it.",
+      author: "Alan Kay",
+    },
+    {
+      content: "Life is 10% what happens to us and 90% how we react to it.",
+      author: "Charles R. Swindoll",
+    },
+    
+    
+  ]);
+  const navigate = useNavigate();
+  const isLoggedIn = !!auth.currentUser;
+
+  useEffect(() => {
+    const fetchQuotes = async () => {
+      try {
+        const response = await axios.get("https://api.quotable.io/quotes", {
+          params: { limit: 10 },
+        });
+        const fetchedQuotes = response.data.results.map((quote, index) => ({
+          ...quote,
+          index,
+        }));
+        setQuotes(fetchedQuotes);
+
+        if (fetchedQuotes.length >= 2) {
+          setCurrentQuotes([fetchedQuotes[0], fetchedQuotes[1]]);
+        }
+      } catch (error) {
+        console.error("Error fetching the quotes data:", error);
+      }
+    };
+
+    fetchQuotes();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuotes((prevQuotes) => {
+        if (quotes.length >= 2) {
+          const newIndex1 = (prevQuotes[0].index + 2) % quotes.length;
+          const newIndex2 = (prevQuotes[1].index + 2) % quotes.length;
+          return [quotes[newIndex1], quotes[newIndex2]];
+        } else {
+          return prevQuotes;
+        }
+      });
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [quotes]);
+
+  const handleLibraryClick = () => {
+    if (isLoggedIn) {
+      navigate("/bookpage");
+    } else {
+      navigate("/login");
+    }
+  };
+
+  return (
+    <div className="homecon">
+      <div className="home">
+        <div className="hometext">
+          <h2>
+            Empowering Future Health Innovators For Sustainer Public Health Care
+          </h2>
+          <button className="button" onClick={handleLibraryClick}>
+            Library
+          </button>
+        </div>
+      </div>
+
+      <div className="con-side-pad">
+        <main>
+          <div className="sub-main">
+            <section className="posts">
+              <article>
+                <div className="pic">
+                  <div className="icon-container">
+                    <FontAwesomeIcon icon={faGraduationCap} />
+                  </div>
+                </div>
+                <div className="info">
+                  <h3>The Best Learning Methods</h3>
+                  <p>
+                    We utilize innovative and effective teaching strategies to
+                    ensure our students excel. Our methods are designed to
+                    foster critical thinking, creativity, and a love for
+                    learning.
+                  </p>
+                </div>
+              </article>
+
+              <article>
+                <div className="pic">
+                  <div className="icon-container">
+                    <FontAwesomeIcon icon={faBook} />
+                  </div>
+                </div>
+                <div className="info">
+                  <h3>Awesome Results Of Our Students</h3>
+                  <p>
+                    Our students consistently achieve outstanding results,
+                    showcasing their dedication and excellence in academics and
+                    extracurricular activities. We are proud of their hard work
+                    and the bright futures they are building.
+                  </p>
+                </div>
+              </article>
+            </section>
+          </div>
+        </main>
+
+        <div className="newscon">
+          <div className="latestnews">
+            <section className="news">
+              <div className="container">
+                <h3 className="quote">Random Quotes</h3>
+                <div className="newsarticlecon">
+                  {currentQuotes.length > 0 &&
+                    currentQuotes.map((quote, index) => (
+                      <article className="articles" key={index}>
+                        <div className="pic">
+                          <img
+                            src={index % 2 === 0 ? img1 : img2}
+                            alt="quote-image"
+                          />
+                        </div>
+                        <div className="info">
+                          <h4>{quote.content}</h4>
+                          <p className="date">- {quote.author}</p>
+                        </div>
+                      </article>
+                    ))}
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div className="Famous-book">
+          <h2>Famous Science Books</h2>
+          <Books />
+        </div>
+
+        <div className="info-div">
+          <div className="container">
+            <div className="info-con">
+              <img src={write} alt="" />
+              <div>
+                <span className="title">Request information</span>
+                <span className="text">
+                  Do you have some questions? Fill the form and get an answer!
+                </span>
+              </div>
+            </div>
+            <div className="redirect">
+              <Link className="arrow" to="/contact">
+                <FontAwesomeIcon icon={faArrowRight} />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="footerpart">
+          <footer id="footer">
+            <div className="container">
+              <section>
+                <article className="col-1">
+                  <h3>Contact</h3>
+                  <ul>
+                    <li className="address">
+                      <a href="#">
+                        <FontAwesomeIcon icon={faMapMarkerAlt} /> Mbiotic 1,
+                        Etinan L.g.a., Akwa Ibom State
+                      </a>
+                    </li>
+                    <li className="mail">
+                      <a
+                        href="mailto: woclifhealthtech@gmail.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FontAwesomeIcon icon={faEnvelope} />
+                        woclifhealthtech@gmail.com
+                      </a>
+                    </li>
+                    <li className="phone last">
+                      <a
+                        href="tel: 08036716825"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FontAwesomeIcon icon={faPhone} /> (234) 803 671 6825
+                      </a>
+                    </li>
+                  </ul>
+                </article>
+
+                <article className="col-2">
+                  <h3>National Diploma </h3>
+                  <ul>
+                    <li>
+                      <a href="#">Public Health Technology</a>
+                    </li>
+                    <li>
+                      <a href="#">Epidemiology & Disease Control</a>
+                    </li>
+                    <li>
+                      <a href="#">Environmental Health Technology </a>
+                    </li>
+                    <li>
+                      <a href="#">Community Health Extention Work </a>
+                    </li>
+              
+                    <li>
+                      <a href="#">Paramedics & Medical Social Work</a>
+                    </li>
+                  </ul>
+                </article>
+
+                <article className="col-3">
+                  <h3>Social media</h3>
+                  <span>
+                    Connect with us on social media and stay updated with the
+                    latest news and events.
+                  </span>
+                  <ul>
+                    <li
+                      className="facebook"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <a href="https://www.facebook.com/woclif.schoolofhealthtech">
+                        <FontAwesomeIcon icon={faFacebook} /> Facebook
+                      </a>
+                    </li>
+                    <li className="google-plus">
+                      <a
+                        href="https://www.instagram.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FontAwesomeIcon icon={faInstagram} size="2x" />
+                        Instagram
+                      </a>
+                    </li>
+                    <li className="twitter">
+                      <a href="#">
+                        <FontAwesomeIcon icon={faTwitter} /> Twitter(X)
+                      </a>
+                    </li>
+                    <li
+                      className="pinterest"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <a
+                        href="https://www.tiktok.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FontAwesomeIcon icon={faTiktok} size="2x" />
+                        Tiktok
+                      </a>
+                    </li>
+                  </ul>
+                </article>
+                <article className="col-4">
+                  <h3>Newsletter</h3>
+                  <span>
+                    Sign up for our newsletter to get school updates and news
+                  </span>
+                  <Subscribe />
+                </article>
+              </section>
+              <p className="copy">
+                Copyright 2024 WOCLIF School Of Health Technology. All rights
+                reserved.
+              </p>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Home;
