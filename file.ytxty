@@ -16,7 +16,6 @@ import {
 import {
   faFacebook,
   faTwitter,
-  faPinterest,
   faInstagram,
   faTiktok,
 } from "@fortawesome/free-brands-svg-icons";
@@ -35,12 +34,11 @@ function Home() {
       content: "The best way to predict the future is to invent it.",
       author: "Alan Kay",
     },
+    
     {
-      content: "Life is 10% what happens to us and 90% how we react to it.",
-      author: "Charles R. Swindoll",
+      content: "The purpose of our lives is to be happy.",
+      author: "Dalai Lama",
     },
-    
-    
   ]);
   const navigate = useNavigate();
   const isLoggedIn = !!auth.currentUser;
@@ -48,7 +46,7 @@ function Home() {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const response = await axios.get("https://api.quotable.io/quotes", {
+        const response = await axios.get("https://api.quotable[sss].io/quotes", {
           params: { limit: 10 },
         });
         const fetchedQuotes = response.data.results.map((quote, index) => ({
@@ -183,16 +181,25 @@ function Home() {
             <div className="info-con">
               <img src={write} alt="" />
               <div>
-                <span className="title">Request information</span>
+                <span className="title">2024/2025 Application Form Is Out</span>
                 <span className="text">
-                  Do you have some questions? Fill the form and get an answer!
+                  Fill the application form with your Surname, Firstname,
+                  Middlename, Email Address (only G-mail is allowed), and Phone
+                  Number.
                 </span>
               </div>
             </div>
             <div className="redirect">
-              <Link className="arrow" to="/contact">
-                <FontAwesomeIcon icon={faArrowRight} />
-              </Link>
+              <button
+              className="arrow"
+                onClick={() =>
+                  window.open(
+                    "https://docs.google.com/forms/d/e/1FAIpQLSfkIN40_FJ13qqHVNK0Zkdz7KebspMTLKNxejOSrfm0norixw/viewform?usp=pp_url"
+                  )
+                }
+              >
+                Form
+              </button>
             </div>
           </div>
         </div>
@@ -231,7 +238,6 @@ function Home() {
                     </li>
                   </ul>
                 </article>
-
                 <article className="col-2">
                   <h3>National Diploma </h3>
                   <ul>
@@ -247,7 +253,7 @@ function Home() {
                     <li>
                       <a href="#">Community Health Extention Work </a>
                     </li>
-              
+
                     <li>
                       <a href="#">Paramedics & Medical Social Work</a>
                     </li>
